@@ -17,11 +17,10 @@ driver.get(Website)
 driver.find_element_by_id("Identifiant").send_keys(StudentID)
 driver.find_element_by_id("Password").send_keys(Password)
 driver.find_element_by_class_name("btn.green.darken-3.right.recaptcha-trigger.no-margin-right").click()
-ScheduleMakingTime=1622787780
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "ctl00_partOffreServices_offreV2_INSC")))
 driver.find_element_by_xpath('//*[@id="ctl00_partOffreServices_offreV2_INSC"]/span').click()
 
-Time= 1623250798
+Time= 0 #Time is in Epoch
 
 while Time - int(time.time())>0:
     continue
@@ -36,7 +35,7 @@ else:
         except:
             driver.refresh()
     
-    CourseCodes=['PRO-LBM', '420-LCU-05', '345-LPH-MS', '603-103-MQ']
+    CourseCodes=['PRO-LBM', '420-LCU-05', '345-LPH-MS', '603-103-MQ'] #Course codes
     
     for names in CourseCodes: #Add them to the course offerings
         Thing='None'
@@ -53,12 +52,12 @@ else:
                 continue
     
     
-    Teacher_Name={'PRO-LBM':'02', '345-LPH-MS':'04', '420-LCU-05':'01', '603-103-MQ':'20'}    
+    Section_Dict={'PRO-LBM':'02', '345-LPH-MS':'04', '420-LCU-05':'01', '603-103-MQ':'20'}    #Dictionary with course codes and section numbers. If section <10 keep a 0 in front to ensure no problems
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "tblContenuSSO")))
     
     for names in CourseCodes: #Add to the dropdowns
         Group='Groupe'+str(names.replace('-',''))
-        section= Teacher_Name.get(names)
+        section= Section_Dict.get(names)
         try:
             driver.find_element_by_xpath('//*[@name="'+Group+'"]/option[contains(.,"'+section+'")]').click()
         except:
